@@ -1,0 +1,50 @@
+@if (isHiddenMenu()) {
+<div class="fixed bg-black/40 transition-all duration-200 inset-0 flex lg:hidden z-50" (click)="toggleMenu()"></div>
+}
+
+<div class="fixed w-[24rem] lg:w-[20rem] h-full lg:h-[calc(100vh_-_8rem)] z-50 bg-white dark:bg-[var(--p-surface-900)] top-0 lg:top-20 left-0 lg:left-10 p-4 rounded-md  transition-all duration-200"
+    [class]="isHiddenMenu() ? 'translate-x-0 lg:translate-x-[-120%]' : 'translate-x-[-120%] lg:translate-x-0'">
+    <!-- Menu -->
+    <ul class="space-y-1">
+        @for (item of menu(); track item.label) {
+        <li class="mb-8">
+            <!-- Ítem con routerLink -->
+            @if (item.routerLink) {
+            <a [routerLink]="item.routerLink"
+                routerLinkActive="bg-zinc-100 dark:bg-zinc-800 !text[var(--p-button-text-primary-color)] dark:!text-[var(--p-button-text-primary-color)]"
+                class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100
+                   dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800 transition"
+                [routerLinkActiveOptions]="{ exact: true }">
+                <i [class]="item.icon"></i>
+                <span class="text-sm font-medium">{{ item.label }}</span>
+            </a>
+            }
+
+            <!-- Ítem con submenú -->
+            @if (!item.routerLink && !!item.submenu) {
+            <span class="flex items-center gap-3 mb-4 block">
+                @if (!!item.icon) {
+                <i [class]="item.icon"></i>
+                }
+                <span class="text-sm font-medium">{{ item.label }}</span>
+            </span>
+
+            <ul class="mt-1 pl-4 pr-2 space-y-1 overflow-hidden transition-[max-height] duration-300">
+                @for (sub of item.submenu; track sub.label) {
+                <li>
+                    <a [routerLink]="sub.routerLink"
+                        routerLinkActive="bg-zinc-100 dark:bg-zinc-800 !text[var(--p-button-text-primary-color)] dark:!text-[var(--p-button-text-primary-color)]"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100
+                         dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800 transition text-sm"
+                        [routerLinkActiveOptions]="{ exact: true }">
+                        <i [class]="sub.icon"></i>
+                        <span>{{ sub.label }}</span>
+                    </a>
+                </li>
+                }
+            </ul>
+            }
+        </li>
+        }
+    </ul>
+</div>

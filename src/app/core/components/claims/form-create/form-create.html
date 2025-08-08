@@ -1,0 +1,76 @@
+<div class="flex mb-4">
+
+    <form [formGroup]="createClaimForm" class="flex flex-col flex-wrap gap-4 flex-1" (ngSubmit)="onSubmit()">
+        <!-- Code -->
+        <div class="flex flex-col gap-1">
+            <input pInputText class="min-w-[120px]" formControlName="code" name="code" placeholder="Código"
+                [invalid]="isInvalid('code')" />
+            @if (isInvalid('code')) {
+            <p-message severity="error" size="small" variant="simple">Código es requerido.</p-message>
+            }
+        </div>
+        <!-- End Code -->
+
+        <!-- Business -->
+        <div class="flex flex-col gap-1">
+            <input pInputText class="min-w-[120px]" formControlName="business" name="business" placeholder="Empresa"
+                [invalid]="isInvalid('business')" />
+            @if (isInvalid('business')) {
+            <p-message severity="error" size="small" variant="simple">Empresa es requerida.</p-message>
+            }
+        </div>
+        <!-- End Business -->
+
+        <!-- Reason -->
+        <div class="flex flex-col gap-1">
+            <input pInputText class="min-w-[120px]" formControlName="reason" name="reason" placeholder="Razón"
+                [invalid]="isInvalid('reason')" />
+            @if (isInvalid('reason')) {
+            <p-message severity="error" size="small" variant="simple">Razón es requerida.</p-message>
+            }
+        </div>
+        <!-- End Reason -->
+
+        <!-- Description -->
+        <div class="flex flex-col gap-1">
+            <textarea pInputTextarea class="min-w-[120px]" formControlName="description" name="description"
+                placeholder="Descripción" [invalid]="isInvalid('description')"></textarea>
+            @if (isInvalid('description')) {
+            <p-message severity="error" size="small" variant="simple">Descripción es requerida.</p-message>
+            }
+        </div>
+        <!-- End Description -->
+
+        <!-- Email Client -->
+        <div class="flex flex-col gap-1">
+            <input pInputText class="min-w-[120px]" formControlName="email_client" name="email_client"
+                placeholder="Email cliente" [invalid]="isInvalid('email_client')" />
+            @if (isInvalid('email_client')) {
+            @if (createClaimForm.get('email_client')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Correo es requerido.</p-message>
+            }
+            @if (createClaimForm.get('email_client')?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple">Correo no válido.</p-message>
+            }
+            }
+        </div>
+        <!-- End Email Client -->
+
+        <!-- Files -->
+        <p-fileupload name="files[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)"
+            [showCancelButton]="false" [showUploadButton]="false" [multiple]="true" accept="image/*"
+            maxFileSize="2000000" mode="advanced" [disabled]="isLoadingForm()">
+            <ng-template #empty>
+                <div>Arrastre y suelte archivos aquí para cargarlos.</div>
+            </ng-template>
+        </p-fileupload>
+        <!-- End Files -->
+
+        <div class="flex justify-end gap-4">
+            <p-button type="button" label="Cerrar" variant="outlined" severity="secondary" (click)="closeModal()"
+                [disabled]="isLoadingForm()" />
+            <p-button type="submit" label="Crear" class="w-full md:w-auto *:w-full" [loading]="isLoadingForm()" />
+        </div>
+    </form>
+
+</div>

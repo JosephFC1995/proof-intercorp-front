@@ -1,0 +1,8 @@
+<div class="layout">
+    <app-topbar />
+    <app-sidebar />
+
+    <div class="ml-0 mt-8 px-8 duration-200 transition-all" [class]="!isHiddenMenu() ? 'lg:ml-[24rem]' : 'lg:ml-0'">
+        <router-outlet />
+    </div>
+</div>

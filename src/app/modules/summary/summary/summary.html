@@ -1,0 +1,10 @@
+<div class="flex flex-col justify-between items-start md:items-start mb-4 gap-4">
+    <h1 class="text-3xl font-bold mb-4 md:mb-0">Resumen</h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+    @for (widget of widget; track widget.title) {
+    <app-stats-widget class="contents" [widget]="widget" />
+    }
+    <app-stats-chart-qs class="contents" />
+</div>
