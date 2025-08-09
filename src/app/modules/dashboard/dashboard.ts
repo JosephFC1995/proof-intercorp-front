@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { ItemSelect } from '../../core/types/global';
+import { ItemSelect, ResponsePagination } from '../../core/types/global';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -11,6 +11,13 @@ import { DialogService, DynamicDialogRef } from "primeng/dynamicdialog";
 import { FormCreate } from '../../core/components/claims/form-create/form-create';
 import { Router } from "@angular/router";
 import { CLAIM_STATUS, CLAIM_STATUS_COLOR, StatusClaim } from '../../core/consts/claims';
+import { ClaimService } from '../../core/services/claim.service/claim.service';
+import { injectQuery, keepPreviousData, QueryClient } from '@tanstack/angular-query-experimental';
+import { CommonModule } from '@angular/common';
+import { Claim } from '../../core/types/claims';
+import { PaginatorModule } from 'primeng/paginator';
+import { DateUtils } from '../../core/utils/date';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +29,9 @@ import { CLAIM_STATUS, CLAIM_STATUS_COLOR, StatusClaim } from '../../core/consts
     ButtonModule,
     DatePickerModule,
     TagModule,
+    CommonModule,
+    PaginatorModule,
+    TooltipModule,
   ],
   providers: [
     DialogService
@@ -34,103 +44,61 @@ export class Dashboard {
   dialogRef?: DynamicDialogRef = undefined;
   dialogService: DialogService = inject(DialogService);
   router: Router = inject(Router);
+  claimService: ClaimService = inject(ClaimService);
+  queryClient = inject(QueryClient)
+  dateUtils: DateUtils = inject(DateUtils);
 
   filterForm = new FormGroup({
-    business: new FormControl('',),
+    business: new FormControl(),
     status: new FormControl(),
     date: new FormControl(),
   })
 
+  businessFilter = signal('');
+  statusFilter = signal('');
+  dateFilter = signal('');
+  pageSize = signal(10);
+  page = signal(0);
+
   // TODO: Integrate service for data
-  statusFilter: ItemSelect[] = [
+  statusList: ItemSelect[] = [
     { label: 'Pendiente', value: 'pending' },
     { label: 'Aprobado', value: 'approved' },
     { label: 'Rechazado', value: 'rejected' },
     { label: 'Cancelado', value: 'cancelled' },
   ];
 
-  claims = signal([
-    {
-      code: 'A',
-      name: 'Apple',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'pending',
-    },
-    {
-      code: 'B',
-      name: 'Banana',
-      category: 'Fruits',
-      quantity: 2,
-      status: 'approved',
-    },
-    {
-      code: 'C',
-      name: 'Cherry',
-      category: 'Fruits',
-      quantity: 5,
-      status: 'rejected',
-    },
-    {
-      code: 'D',
-      name: 'Durian',
-      category: 'Fruits',
-      quantity: 4,
-      status: 'cancelled',
-    },
-    {
-      code: 'E',
-      name: 'Elderberry',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'pending',
-    },
-    {
-      code: 'F',
-      name: 'Fig',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'approved',
-    },
-    {
-      code: 'G',
-      name: 'Grape',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'rejected',
-    },
-    {
-      code: 'H',
-      name: 'Honeydew',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'cancelled',
-    },
-    {
-      code: 'I',
-      name: 'Iris',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'pending',
-    },
-    {
-      code: 'J',
-      name: 'Jackfruit',
-      category: 'Fruits',
-      quantity: 3,
-      status: 'approved',
-    },
+  query = injectQuery(() => ({
+    queryKey: ['claims', this.pageSize(), this.page(), this.businessFilter(), this.statusFilter(), this.dateFilter()],
+    queryFn: () => this.claimService.getClaims({
+      pageSize: this.pageSize(),
+      page: this.page() + 1,
+      ...((this.businessFilter() && this.businessFilter().length > 0) ? { business: this.businessFilter() } : undefined),
+      ...((this.statusFilter() && this.statusFilter().length > 0) ? { status: this.statusFilter() } : undefined),
+      ...((this.dateFilter() && this.dateFilter().length > 0) ? { date: this.dateFilter() } : undefined),
+    }),
+    placeholderData: keepPreviousData,
+    gcTime: 0,
+  }))
 
-  ]);
+  isLoading = computed(() => this.query.isFetching() || this.query.isLoading());
+  claims: Signal<Claim[]> = computed(() => this.query.data()?.items || ([] as Claim[]));
 
   onSubmit() {
-    console.log(this.filterForm.value);
+    const { business, status, date } = this.filterForm.value;
+    this.businessFilter.set(business?.trim());
+    this.statusFilter.set(status);
+    if (date) {
+      this.dateFilter.set(this.dateUtils.format(new Date(date), 'yyyy-MM-dd'));
+    } else {
+      this.dateFilter.set('');
+    }
   }
 
   getSeverityHumanized(status: StatusClaim) {
     return CLAIM_STATUS[status];
   }
-  
+
   getSeverityColor(status: StatusClaim) {
     return CLAIM_STATUS_COLOR[status];
   }
@@ -149,13 +117,17 @@ export class Dashboard {
 
     this.dialogRef.onClose.subscribe((response) => {
       if (response) {
-        console.log('Dialog was closed with a value: ' + response);
+        this.query.refetch();
       }
     });
   }
 
   handleGoToClaim(id: string) {
-    console.log(id);
     this.router.navigate(['/app/claims', id]);
+  }
+
+  onPageChange(event: any) {
+    this.page.set(event?.page);
+    this.pageSize.set(event?.rows);
   }
 }

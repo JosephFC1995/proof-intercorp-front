@@ -1,29 +1,34 @@
 <div class="flex flex-row justify-between items-start md:items-center mb-4">
     <h1 class="text-3xl font-bold mb-4 md:mb-0">Dashboard</h1>
-    <p-button type="button" label="Crear nuevo reclamo" class="hidden md:block" (click)="handleOpenModalCreateClaim()" />
-    <p-button type="button" icon="pi pi-plus" aria-label="Crear nuevo reclamo" class="block md:hidden" (click)="handleOpenModalCreateClaim()" />
+    <p-button type="button" label="Crear nuevo reclamo" class="hidden md:block"
+        (click)="handleOpenModalCreateClaim()" />
+    <p-button type="button" icon="pi pi-plus" aria-label="Crear nuevo reclamo" class="block md:hidden"
+        (click)="handleOpenModalCreateClaim()" />
 </div>
 <div class="flex mb-4">
 
     <form [formGroup]="filterForm" class="flex flex-col md:flex-row flex-wrap gap-4 flex-1" (ngSubmit)="onSubmit()">
         <!-- Business -->
         <div class="flex flex-col gap-1">
-            <input pInputText class="min-w-[120px]" formControlName="business" name="business" placeholder="Empresa" />
+            <input pInputText class="w-full lg:w-[220px]" formControlName="business" name="business"
+                placeholder="Empresa" [disabled]="isLoading()"
+                [class]="isLoading() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
         </div>
         <!-- End Business -->
 
         <!-- Status -->
         <div class="flex flex-col gap-1">
-            <p-select formControlName="status" [options]="statusFilter" optionLabel="label" optionValue="value"
-                placeholder="Selecciona un estado" class="min-w-[120px]" [showClear]="true" />
+            <p-select formControlName="status" [options]="statusList" optionLabel="label" optionValue="value"
+                placeholder="Selecciona un estado" class="w-full lg:w-[220px]" [showClear]="true"
+                [disabled]="isLoading()" />
 
         </div>
         <!-- End Status -->
 
         <!-- Date -->
         <div class="flex flex-col gap-1">
-            <p-datepicker name="date" formControlName="date" placeholder="Fecha" [showClear]="true"
-                dateFormat="D 'de' M, yy" />
+            <p-datepicker class="w-full lg:w-[220px]" name="date" formControlName="date" placeholder="Fecha"
+                [showClear]="true" dateFormat="D dd 'de' M, yy" [disabled]="isLoading()" />
         </div>
         <!-- End Date -->
 
@@ -33,36 +38,42 @@
 </div>
 
 <div class="card">
-    <p-table [value]="claims()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10"
-        [rowsPerPageOptions]="[5, 10, 20]">
+    <p-table [value]="claims()" [tableStyle]="{ 'min-width': '50rem' }" [rows]="10" [loading]="isLoading()">
         <ng-template #header>
             <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Status</th>
+                <th class="w-full lg:w-[220px]">Código</th>
+                <th class="w-full lg:w-[220px]">Empresa</th>
+                <th class="w-full lg:w-[220px]">Razón</th>
+                <th class="w-full lg:w-[220px]">Correo electrónico</th>
+                <th class="w-full lg:w-[150px]">Último estado</th>
+                <th class="w-full lg:w-[220px]">Fecha de creación</th>
                 <th>Acciones</th>
             </tr>
         </ng-template>
         <ng-template #body let-claim>
             <tr>
                 <td>{{ claim.code }}</td>
-                <td>{{ claim.name }}</td>
-                <td>{{ claim.category }}</td>
-                <td>{{ claim.quantity }}</td>
+                <td>{{ claim.business }}</td>
+                <td>{{ claim.reason }}</td>
+                <td>{{ claim.email_client }}</td>
                 <td>
-                    <p-tag [value]="getSeverityHumanized(claim.status)" [severity]="getSeverityColor(claim.status)" />
+                    <p-tag [value]="getSeverityHumanized(claim.last_status?.status)"
+                        [severity]="getSeverityColor(claim.last_status?.status)" />
                 </td>
+                <td>{{ claim.created_at | date: "dd 'de' MMMM, yyyy" }}</td>
                 <td>
                     <div class="flex gap-2">
                         <p-button label="Ver reclamo" size="small" icon="pi pi-eye"
-                            class="p-button-rounded p-button-outlined" variant="outlined" (click)="handleGoToClaim(claim.code)" />
-                        <p-button label="Eliminar" size="small" icon="pi pi-trash"
+                            class="p-button-rounded p-button-outlined" variant="outlined"
+                            (click)="handleGoToClaim(claim.code)" />
+                        <p-button arial-label="Eliminar" size="small" icon="pi pi-trash"
+                            pTooltip="Active for next release" disabled tooltipPosition="top"
                             class="p-button-rounded p-button-outlined" variant="outlined" severity="danger" />
                     </div>
                 </td>
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="pageSize()" [totalRecords]="query.data()?.total || 0"
+        [rowsPerPageOptions]="[5, 10, 20]" [class]="isLoading() ? 'opacity-50 !pointer-events-none' : ''"></p-paginator>
 </div>

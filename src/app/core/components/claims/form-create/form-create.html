@@ -4,7 +4,8 @@
         <!-- Code -->
         <div class="flex flex-col gap-1">
             <input pInputText class="min-w-[120px]" formControlName="code" name="code" placeholder="Código"
-                [invalid]="isInvalid('code')" />
+                [invalid]="isInvalid('code')" readonly [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
             @if (isInvalid('code')) {
             <p-message severity="error" size="small" variant="simple">Código es requerido.</p-message>
             }
@@ -14,7 +15,8 @@
         <!-- Business -->
         <div class="flex flex-col gap-1">
             <input pInputText class="min-w-[120px]" formControlName="business" name="business" placeholder="Empresa"
-                [invalid]="isInvalid('business')" />
+                [invalid]="isInvalid('business')" [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
             @if (isInvalid('business')) {
             <p-message severity="error" size="small" variant="simple">Empresa es requerida.</p-message>
             }
@@ -24,7 +26,8 @@
         <!-- Reason -->
         <div class="flex flex-col gap-1">
             <input pInputText class="min-w-[120px]" formControlName="reason" name="reason" placeholder="Razón"
-                [invalid]="isInvalid('reason')" />
+                [invalid]="isInvalid('reason')" [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
             @if (isInvalid('reason')) {
             <p-message severity="error" size="small" variant="simple">Razón es requerida.</p-message>
             }
@@ -34,7 +37,19 @@
         <!-- Description -->
         <div class="flex flex-col gap-1">
             <textarea pInputTextarea class="min-w-[120px]" formControlName="description" name="description"
-                placeholder="Descripción" [invalid]="isInvalid('description')"></textarea>
+                placeholder="Descripción" [invalid]="isInvalid('description')" [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''"></textarea>
+
+            <!-- TODO: Validation correctly when using quill -->
+            <!-- <p-editor formControlName="description" [invalid]="isInvalid('description')" [style]="{ height: '320px' }">
+                <ng-template #header>
+                    <span class="ql-formats">
+                        <button type="button" class="ql-bold" aria-label="Bold"></button>
+                        <button type="button" class="ql-italic" aria-label="Italic"></button>
+                        <button type="button" class="ql-underline" aria-label="Underline"></button>
+                    </span>
+                </ng-template>
+            </p-editor> -->
             @if (isInvalid('description')) {
             <p-message severity="error" size="small" variant="simple">Descripción es requerida.</p-message>
             }
@@ -44,7 +59,8 @@
         <!-- Email Client -->
         <div class="flex flex-col gap-1">
             <input pInputText class="min-w-[120px]" formControlName="email_client" name="email_client"
-                placeholder="Email cliente" [invalid]="isInvalid('email_client')" />
+                placeholder="Email cliente" [invalid]="isInvalid('email_client')" [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
             @if (isInvalid('email_client')) {
             @if (createClaimForm.get('email_client')?.errors?.['required']) {
             <p-message severity="error" size="small" variant="simple">Correo es requerido.</p-message>
@@ -57,7 +73,7 @@
         <!-- End Email Client -->
 
         <!-- Files -->
-        <p-fileupload name="files[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)"
+        <p-fileupload name="files[]" url="https://www.primefaces.org/cdn/api/upload.php" (onSelect)="onUpload($event)"
             [showCancelButton]="false" [showUploadButton]="false" [multiple]="true" accept="image/*"
             maxFileSize="2000000" mode="advanced" [disabled]="isLoadingForm()">
             <ng-template #empty>
