@@ -37,4 +37,12 @@ export class ClaimService {
 
     return lastValueFrom(this.http.post<any>(`${environment.API_URL}claims/${claimId}/attachments`, form));
   }
+
+  getClaim(claimId: string) {
+    return lastValueFrom(this.http.get<Claim>(`${environment.API_URL}claims/${claimId}`));
+  }
+
+  updateStatusClaim(claimId: string, status: string, commentAdviser?: string) {
+    return lastValueFrom(this.http.put<Claim>(`${environment.API_URL}claims/${claimId}`, { status, commentAdviser }));
+  }
 }

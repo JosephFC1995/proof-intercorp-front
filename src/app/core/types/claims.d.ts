@@ -9,6 +9,10 @@ export interface Claim {
     last_status: StatusClaim;
 }
 
+export interface ClaimDetail extends Claim {
+    statuses: StatusClaim[];
+}
+
 
 export interface StatusClaim {
     id: number;

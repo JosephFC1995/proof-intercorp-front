@@ -12,7 +12,7 @@
             </p>
 
             <p class="m-0 font-bold">
-                123
+                {{ claim()?.code }}
             </p>
         </div>
         <div class="flex flex-col gap-1 mb-4">
@@ -21,7 +21,7 @@
             </p>
 
             <p class="m-0 font-bold">
-                Empresa SAC
+                {{ claim()?.business }}
             </p>
         </div>
         <div class="flex flex-col gap-1 mb-4">
@@ -30,7 +30,7 @@
             </p>
 
             <p class="m-0 font-bold">
-                Motivo
+                {{ claim()?.reason }}
             </p>
         </div>
         <div class="flex flex-col gap-1 mb-4">
@@ -39,8 +39,7 @@
             </p>
 
             <p class="m-0 font-bold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Id quos dolores alias ducimus molestiae fugiat,
-                hic labore, explicabo nobis pariatur doloribus cumque voluptas, debitis saepe!
+                {{ claim()?.description }}
             </p>
         </div>
         <div class="flex flex-col gap-1 mb-4">
@@ -49,25 +48,29 @@
             </p>
 
             <p class="m-0 font-bold">
-                <a href="mailto:email@email.com">email@email.com</a>
+                <a target="_blank" [href]="`mailto:${claim?.email_client}`">
+                    {{ claim()?.email_client }}
+                </a>
             </p>
         </div>
         <div class="flex flex-col gap-1 mb-4">
             <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
                 Último estado
             </p>
-
+            @if (claim()?.last_status) {
             <p class="m-0 font-bold">
-                <p-tag [value]="getSeverityHumanized('approved')" [severity]="getSeverityColor('approved')" />
+                <p-tag [value]="getSeverityHumanized(claim()?.last_status?.status)"
+                    [severity]="getSeverityColor(claim()?.last_status?.status)" />
             </p>
+            }
         </div>
     </p-card>
 
     <!-- Timeline -->
     <p-card header="Historial de estados" class="col-span-1 lg:col-span-5">
-        <p-timeline [value]="statusHistory()" class="mt-4">
+        <p-timeline [value]="claim()?.statuses" class="mt-4">
             <ng-template #opposite let-status>
-                <small class="text-surface-500 dark:text-surface-400">{{ status.date }}</small>
+                <small class="text-surface-500 dark:text-surface-400">{{ status.created_at | date: "dd 'de' MMMM, yyyy" }}</small>
             </ng-template>
             <ng-template #content let-status>
                 <p-tag [value]="getSeverityHumanized(status.status)" [severity]="getSeverityColor(status.status)" />
