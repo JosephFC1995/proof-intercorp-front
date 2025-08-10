@@ -8,7 +8,7 @@
 }@else if (isError()) {
 <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4">
     <div class="flex flex-col justify-between items-start md:items-start mb-1 gap-4 col-span-1 lg:col-span-12">
-        <p-button type="button" [rounded]="true" label="Regresar" class="hidden md:block" (click)="handleGoToList()"
+        <p-button type="button" [rounded]="true" label="Regresar" (click)="handleGoToList()"
             size="small" icon="pi pi-arrow-left" variant="outlined" />
         <div class="flex flex-col gap-4 tex-center w-full justify-center items-center">
             <i class="pi pi-info-circle" style="font-size: 2.5rem; color: var(--p-primary-color)"></i>
@@ -26,9 +26,9 @@
 }@else {
 <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4">
     <div class="flex flex-col justify-between items-start md:items-start mb-1 gap-4 col-span-1 lg:col-span-12">
-        <p-button type="button" [rounded]="true" label="Regresar" class="hidden md:block" (click)="handleGoToList()"
+        <p-button type="button" [rounded]="true" label="Regresar" (click)="handleGoToList()"
             size="small" icon="pi pi-arrow-left" variant="outlined" />
-        <div class="flex flex-row w-full justify-between items-start md:items-center">
+        <div class="flex flex-col lg:flex-row w-full justify-between items-start md:items-center gap-4">
             <h1 class="text-3xl font-bold">Detalle de reclamo</h1>
             <p-button type="button" label="Cambiar estado" class="hidden md:block" size="small"
                 (click)="handleChangeStatusClaim()" />
