@@ -1,0 +1,46 @@
+<div class="flex mb-4">
+
+    <form [formGroup]="statusForm" class="flex flex-col flex-wrap gap-4 flex-1" (ngSubmit)="onSubmit()">
+
+        <!-- Status -->
+        <div class="flex flex-col gap-1">
+            <p-select formControlName="status" [options]="statusList" optionLabel="label" optionValue="value"
+                placeholder="Selecciona un estado" class="min-w-[120px]" [showClear]="true"
+                [invalid]="isInvalid('status')" [disabled]="isLoadingForm()" />
+            @if (isInvalid('status')) {
+            <p-message severity="error" size="small" variant="simple">Estado es requerido.</p-message>
+            }
+        </div>
+        <!-- End Status -->
+
+        <!-- Comment Adviser -->
+        <div class="flex flex-col gap-1">
+            <textarea pInputTextarea class="min-w-[120px]" formControlName="commentAdviser" name="commentAdviser"
+                placeholder="Comentario del Advisor" [disabled]="isLoadingForm()"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''">
+                </textarea>
+        </div>
+        <!-- End Comment Adviser -->
+
+        <!-- Email Adviser -->
+        <div class="flex flex-col gap-1">
+            <input pInputText class="min-w-[120px]" formControlName="emailAdviser" name="emailAdviser"
+                placeholder="Email del Advisor" [disabled]="isLoadingForm()" [invalid]="isInvalid('emailAdviser')"
+                [class]="isLoadingForm() ? 'opacity-100 !pointer-events-none !bg-[var(--p-select-disabled-background)]' : ''" />
+            @if (isInvalid('emailAdviser')) {
+            @if (statusForm.get('emailAdviser')?.errors?.['required']) {
+            <p-message severity="error" size="small" variant="simple">Correo es requerido.</p-message>
+            }
+            @if (statusForm.get('emailAdviser')?.errors?.['email']) {
+            <p-message severity="error" size="small" variant="simple">Correo no válido.</p-message>
+            }
+            }
+        </div>
+        <!-- End Email Adviser -->
+
+        <div class="flex justify-end gap-4">
+            <p-button type="button" label="Cerrar" variant="outlined" severity="secondary" (click)="closeModal()" />
+            <p-button type="submit" label="Actualizar" class="w-full md:w-auto *:w-full" />
+        </div>
+    </form>
+</div>

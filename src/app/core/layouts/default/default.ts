@@ -4,10 +4,11 @@ import { MenuItem } from '../../types/global';
 import { Sidebar } from '../../components/general/sidebar/sidebar';
 import { Topbar } from '../../components/general/topbar/topbar';
 import { GlobalState } from '../../services/global-state/global-state';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-default',
-  imports: [RouterOutlet, Sidebar, Topbar],
+  imports: [RouterOutlet, Sidebar, Topbar, ToastModule],
   templateUrl: './default.html',
   styles: ``
 })

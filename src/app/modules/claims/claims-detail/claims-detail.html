@@ -1,95 +1,216 @@
-<div class="flex flex-col justify-between items-start md:items-start mb-4 gap-4">
-    <p-button type="button" [rounded]="true" label="Regresar" class="hidden md:block" (click)="handleGoToList()"
-        size="small" icon="pi pi-arrow-left" variant="outlined" />
-    <h1 class="text-3xl font-bold mb-4 md:mb-0">Detalle de reclamo</h1>
-</div>
-
+@if (isLoading()) {
+<p-skeleton width="5rem" class="mb-2" borderRadius="16px" />
+<p-skeleton width="20rem" height="2rem" class="mb-10" borderRadius="16px" />
+<p-skeleton width="10rem" height="4rem" borderRadius="16px" class="mb-10" />
+<p-skeleton width="10rem" height="2rem" class="mb-5" borderRadius="16px" />
+<p-skeleton width="11rem" height="2rem" class="mb-5" borderRadius="16px" />
+<p-skeleton width="12rem" height="2rem" class="mb-5" borderRadius="16px" />
+}@else if (isError()) {
 <div class="max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4">
-    <p-card header="Información del reclamo" class="col-span-1 lg:col-span-12">
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Código
-            </p>
+    <div class="flex flex-col justify-between items-start md:items-start mb-1 gap-4 col-span-1 lg:col-span-12">
+        <p-button type="button" [rounded]="true" label="Regresar" class="hidden md:block" (click)="handleGoToList()"
+            size="small" icon="pi pi-arrow-left" variant="outlined" />
+        <div class="flex flex-col gap-4 tex-center w-full justify-center items-center">
+            <i class="pi pi-info-circle" style="font-size: 2.5rem; color: var(--p-primary-color)"></i>
 
-            <p class="m-0 font-bold">
-                {{ claim()?.code }}
-            </p>
-        </div>
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Empresa
-            </p>
+            <h1 class="text-3xl font-bold">
+                Up!!
+            </h1>
 
-            <p class="m-0 font-bold">
-                {{ claim()?.business }}
+            <p class="text-lg text-surface-500 dark:text-surface-400">
+                No se logró encontrar el reclamo que buscas.
             </p>
         </div>
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Motivo
-            </p>
+    </div>
+</div>
+}@else {
+<div class="max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <div class="flex flex-col justify-between items-start md:items-start mb-1 gap-4 col-span-1 lg:col-span-12">
+        <p-button type="button" [rounded]="true" label="Regresar" class="hidden md:block" (click)="handleGoToList()"
+            size="small" icon="pi pi-arrow-left" variant="outlined" />
+        <div class="flex flex-row w-full justify-between items-start md:items-center">
+            <h1 class="text-3xl font-bold">Detalle de reclamo</h1>
+            <p-button type="button" label="Cambiar estado" class="hidden md:block" size="small"
+                (click)="handleChangeStatusClaim()" />
+        </div>
+    </div>
 
-            <p class="m-0 font-bold">
-                {{ claim()?.reason }}
-            </p>
-        </div>
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Descripción
-            </p>
+    <div class="col-span-1 lg:col-span-12">
+        <p-card header="Información del reclamo" class="">
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Código
+                </p>
 
-            <p class="m-0 font-bold">
-                {{ claim()?.description }}
-            </p>
-        </div>
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Correo electrónico
-            </p>
+                <p class="m-0 font-bold">
+                    {{ claim().code }}
+                </p>
+            </div>
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Empresa
+                </p>
 
-            <p class="m-0 font-bold">
-                <a target="_blank" [href]="`mailto:${claim?.email_client}`">
-                    {{ claim()?.email_client }}
-                </a>
-            </p>
-        </div>
-        <div class="flex flex-col gap-1 mb-4">
-            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
-                Último estado
-            </p>
-            @if (claim()?.last_status) {
-            <p class="m-0 font-bold">
-                <p-tag [value]="getSeverityHumanized(claim()?.last_status?.status)"
-                    [severity]="getSeverityColor(claim()?.last_status?.status)" />
-            </p>
-            }
-        </div>
-    </p-card>
+                <p class="m-0 font-bold">
+                    {{ claim().business }}
+                </p>
+            </div>
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Motivo
+                </p>
+
+                <p class="m-0 font-bold">
+                    {{ claim().reason }}
+                </p>
+            </div>
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Descripción
+                </p>
+
+                <p class="m-0 font-bold">
+                    {{ claim().description }}
+                </p>
+            </div>
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Correo electrónico
+                </p>
+
+                <p class="m-0 font-bold">
+                    <a target="_blank" [href]="`mailto:${claim().email_client}`">
+                        {{ claim().email_client }}
+                    </a>
+                </p>
+            </div>
+            <div class="flex flex-col gap-1 mb-4">
+                <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                    Último estado
+                </p>
+                @if (claim().last_status) {
+                <p class="m-0 font-bold">
+                    <p-tag [value]="getSeverityHumanized(claim().last_status.status)"
+                        [severity]="getSeverityColor(claim().last_status.status)" />
+                </p>
+                }
+            </div>
+        </p-card>
+    </div>
 
     <!-- Timeline -->
-    <p-card header="Historial de estados" class="col-span-1 lg:col-span-5">
-        <p-timeline [value]="claim()?.statuses" class="mt-4">
-            <ng-template #opposite let-status>
-                <small class="text-surface-500 dark:text-surface-400">{{ status.created_at | date: "dd 'de' MMMM, yyyy" }}</small>
-            </ng-template>
-            <ng-template #content let-status>
-                <p-tag [value]="getSeverityHumanized(status.status)" [severity]="getSeverityColor(status.status)" />
-            </ng-template>
-        </p-timeline>
+    <div class="col-span-1 lg:col-span-5">
+        <p-card header="Historial de estados">
+            <p-timeline [value]="claim().statuses" class="mt-4">
+                <ng-template #opposite let-status>
+                    <small class="text-surface-500 dark:text-surface-400">
+                        {{ status.created_at | date: "dd MMMM, yy - hh:mm a" }}
+                    </small>
+                </ng-template>
+                <ng-template #content let-status>
+                    <p-tag [value]="getSeverityHumanized(status.status)" [severity]="getSeverityColor(status.status)" />
+                    @if (status.comment_adviser) {
+                    <div class="flex flex-col gap-0 mb-4 mt-2">
+                        <p class="m-0 text-xs text-surface-500 dark:text-surface-400">
+                            Comentario asesor
+                        </p>
 
-    </p-card>
+                        <p class="m-0 font-bold text-sm">
+                            {{ status.comment_adviser }}
+                        </p>
+                    </div>
+                    }
+                    @if (status.email_adviser) {
+                    <div class="flex flex-col gap-0 mb-4 mt-2">
+                        <p class="m-0 text-xs text-surface-500 dark:text-surface-400">
+                            Correo asesor
+                        </p>
+
+                        <p class="m-0 font-bold text-sm">
+                            {{ status.email_adviser }}
+                        </p>
+                    </div>
+                    }
+                </ng-template>
+            </p-timeline>
+
+        </p-card>
+    </div>
     <!-- End Timeline -->
 
     <!-- Files -->
     <p-card header="Archivos adjuntos" class="col-span-1 lg:col-span-7">
-        @if (files.length === 0) {
+        @if (filesClaim().length === 0) {
         <div class="flex items-center justify-center flex-col mt-4">
             <i class="pi pi-file-o !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
             <p class="mt-6 mb-0">
                 No hay archivos adjuntos
             </p>
         </div>
+        } @else {
+        <p-accordion [multiple]="true">
+            @for (file of filesClaim(); track file.id) {
+            <p-accordion-panel [value]="file.id">
+                <p-accordion-header>{{ file.name_file }}</p-accordion-header>
+                <p-accordion-content>
+                    <div
+                        class="flex flex-col justify-between items-start border p-4 rounded-md border-zinc-200 dark:border-zinc-700">
+                        <div class="flex flex-col gap-1">
+                            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                                Nombre
+                            </p>
+                            <p class="m-0 font-bold">
+                                {{ file.name_file }}
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                                Tipo
+                            </p>
+                            <p class="m-0 font-bold">
+                                {{ file.type_content }}
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                                Tamaño
+                            </p>
+                            <p class="m-0 font-bold">
+                                {{ transformBytes(file.size_bytes) }} Mb
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                                Fecha
+                            </p>
+                            <p class="m-0 font-bold">
+                                {{ file.created_at | date: "dd 'de' MMMM, yyyy" }}
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <p class="m-0 text-sm text-surface-500 dark:text-surface-400">
+                                Acciones
+                            </p>
+                            <div class="flex gap-2">
+                                <a href="{{ domainFile() + file.url_file }}" target="_blank" download="true"
+                                    class="p-button p-button-sm font-bold p-button-secondary">
+                                    Descargar
+                                </a>
+
+                                <a href="{{ domainFile() + file.url_file }}" target="_blank"
+                                    class="p-button p-button-sm font-bold p-button-secondary">
+                                    Ver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordion-content>
+            </p-accordion-panel>
+            }
+        </p-accordion>
         }
     </p-card>
     <!-- End Files -->
 </div>
+
+}

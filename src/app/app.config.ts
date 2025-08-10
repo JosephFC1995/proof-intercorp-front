@@ -16,6 +16,7 @@ import {
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { LOCALE_ID } from '@angular/core';
 import localeEs from '@angular/common/locales/es';
+import { MessageService } from 'primeng/api';
 
 registerLocaleData(localeEs);
 
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     provideTanStackQuery(new QueryClient()),
     provideAnimationsAsync(),
+    MessageService,
     DatePipe,
     { provide: LOCALE_ID, useValue: 'es-PE' },
     providePrimeNG({

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Claim } from '../../types/claims';
+import { Claim, ClaimDetail, FileClaim } from '../../types/claims';
 import { environment } from '../../../../environments/environment.development';
 import { lastValueFrom } from 'rxjs'
 import { ResponsePagination } from '../../types/global';
@@ -31,6 +31,14 @@ export class ClaimService {
     return lastValueFrom(this.http.post<Claim>(`${environment.API_URL}claims`, claim));
   }
 
+  getClaim(claimId: string) {
+    return lastValueFrom(this.http.get<ClaimDetail>(`${environment.API_URL}claims/${claimId}`));
+  }
+
+  updateStatusClaim(claimId: string, status?: string, comment_adviser?: string, email_adviser?: string) {
+    return lastValueFrom(this.http.post<Claim>(`${environment.API_URL}claims/${claimId}/status`, { status, comment_adviser, email_adviser }));
+  }
+
   uploadFileToClaim(claimId: string, file: File) {
     const form = new FormData();
     form.append('file', file, file.name);
@@ -38,11 +46,7 @@ export class ClaimService {
     return lastValueFrom(this.http.post<any>(`${environment.API_URL}claims/${claimId}/attachments`, form));
   }
 
-  getClaim(claimId: string) {
-    return lastValueFrom(this.http.get<Claim>(`${environment.API_URL}claims/${claimId}`));
-  }
-
-  updateStatusClaim(claimId: string, status: string, commentAdviser?: string) {
-    return lastValueFrom(this.http.put<Claim>(`${environment.API_URL}claims/${claimId}`, { status, commentAdviser }));
+  getFilesToClaim(code: string) {
+    return lastValueFrom(this.http.get<FileClaim[]>(`${environment.API_URL}claims/${code}/attachments`));
   }
 }

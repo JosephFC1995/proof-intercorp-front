@@ -1,10 +1,22 @@
 <div class="flex flex-col justify-between items-start md:items-start mb-4 gap-4">
     <h1 class="text-3xl font-bold mb-4 md:mb-0">Resumen</h1>
 </div>
+@if (isLoading()) {
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <p-skeleton width="100%" height="10rem" class="col-span-1 lg:col-span-3" borderRadius="16px" />
+    <p-skeleton width="100%" height="10rem" class="col-span-1 lg:col-span-3" borderRadius="16px" />
+    <p-skeleton width="100%" height="10rem" class="col-span-1 lg:col-span-3" borderRadius="16px" />
+    <p-skeleton width="100%" height="10rem" class="col-span-1 lg:col-span-3" borderRadius="16px" />
+    <p-skeleton width="100%" height="28rem" class="col-span-12 lg:col-span-8 xl:col-span-9" borderRadius="16px" />
+</div>
+}@else {
+
 
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-    @for (widget of widget; track widget.title) {
+    <app-stats-widget class="contents" [widget]="widgetTotal()" />
+    @for (widget of widgets(); track widget.title) {
     <app-stats-widget class="contents" [widget]="widget" />
     }
     <app-stats-chart-qs class="contents" />
 </div>
+}

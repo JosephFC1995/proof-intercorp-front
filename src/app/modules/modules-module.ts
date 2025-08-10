@@ -6,6 +6,7 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     CommonModule,
     ModulesRoutingModule,
+    ToastModule
   ]
 })
 export class ModulesModule { }

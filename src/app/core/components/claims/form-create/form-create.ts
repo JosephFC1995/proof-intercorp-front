@@ -8,11 +8,13 @@ import { TextareaModule } from 'primeng/textarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment.development';
-import { StringUtils } from '../../../utils/date copy';
+import { StringUtils } from '../../../utils/string';
 import { EditorModule } from 'primeng/editor';
 import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { Claim } from '../../../types/claims';
 import { ClaimService } from '../../../services/claim.service/claim.service';
+import { FileUtils } from '../../../utils/file';
+import { ToastService } from '../../../services/toast-service/toast-service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -40,6 +42,7 @@ export class FormCreate {
   stringUtils: StringUtils = inject(StringUtils);
   queryClient = inject(QueryClient);
   claimService: ClaimService = inject(ClaimService);
+  toastService: ToastService = inject(ToastService);
 
   formSubmitted = signal(false);
   isLoadingForm = signal(false);
@@ -58,6 +61,12 @@ export class FormCreate {
   mutationUpload = injectMutation(() => ({
     mutationFn: ({ code, file }: { code: string, file: File }) => this.claimService.uploadFileToClaim(code, file),
     onSuccess: () => {},
+    onError: (error, variables, context) => {
+      this.isLoadingForm.set(false);
+      const e = error as any;
+      const message = JSON.stringify(e?.error?.errors);
+      this.toastService.showErrorToast('Error al subir el archivo', 'Ha ocurrido un error al subir el archivo <<' + message + '>>');
+    },
   }))
 
   mutation = injectMutation(() => ({
@@ -66,8 +75,15 @@ export class FormCreate {
       const promises: Promise<any>[] = [];
       this.uploadedFiles.map(file => promises.push(this.mutationUpload.mutateAsync({ code: data.code, file })));
       Promise.all(promises).then(() => {
+        this.toastService.showSuccessToast('Reclamo creado', 'El reclamo se creó correctamente');
         this.dialogRef.close(true);
       });
+    },
+    onError: (error, variables, context) => {
+      this.isLoadingForm.set(false);
+      const e = error as any;
+      const message = JSON.stringify(e?.error?.errors);
+      this.toastService.showErrorToast('Error al crear el reclamo', 'Ha ocurrido un error al crear el reclamo <<' + message + '>>');
     },
   }))
 
