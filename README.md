@@ -1,59 +1,120 @@
-# Claims
+# 🅰️ Nombre del Proyecto (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+Reto técnico Fullstack Developer. Sistema de gestion de reclamos de customer care.
 
-## Development server
+**Estado:** `MVP`  
+**Demo:** https://claims-intercorp-front.josephfc.dev/
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🚀 Despliegue local
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Requisitos
 
-## Code scaffolding
+- **Node.js:** `>= 20.x` (recomendado LTS)
+- **pnpm:** `>= 9.x`
+- **Angular CLI:** `>= 20.x`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> Verifica versiones:
 
 ```bash
-ng generate --help
+node -v
+pnpm -v
+pnpm dlx ng version
 ```
 
-## Building
+### Instalación
 
-To build the project run:
+1. Clonar el repositorio
 
 ```bash
-ng build
+git clone https://github.com/josephfc/claims-intercorp-front.git
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+2. Instalar dependencias
 
 ```bash
-ng test
+pnpm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+3. Iniciar el servidor
 
 ```bash
-ng e2e
+pnpm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+4. Acceder a la aplicación en `http://localhost:4200`
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🔒 Environment Variables
+
+```bash
+/src/environments/environment.ts // Variables globales
+/src/environments/environment.development.ts // Variables de desarrollo
+/src/environments/environment.prod.ts // Variables de producción
+```
+
+| Variable      | Descripción              | Ejemplo                      |
+| ------------- | ------------------------ | ---------------------------- |
+| `production`  | Flag de produccion       | `true`                       |
+| `API_URL`     | URL de la API            | `http://localhost:8080/api/` |
+| `PRODUCTION`  | Flag de produccion       | `true`                       |
+| `VERSION`     | Versión del proyecto     | `1.0.0`                      |
+| `NAME`        | Nombre del proyecto      | `Intercorp`                  |
+| `DESCRIPTION` | Descripción del proyecto | `Intercorp`                  |
+| `AUTHOR`      | Autor del proyecto       | `Joseph`                     |
+| `URL_STORAGE` | URL de almacenamiento    | `http://localhost:8080`      |
+| `PREFIX_CODE` | Prefijo de código        | `INT-`                       |
+
+---
+
+## 🗂️ Estructura del proyecto
+
+```bash
+.
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   │   ├── components/         # componentes reusables (formularios, widgets, etc.)
+│   │   │   ├── config/             # configuración de Angular (i18n, primeng, etc.)
+│   │   │   ├── consts/             # constantes reusables
+│   │   │   ├── layouts/            # layots para páginas
+│   │   │   ├── servicios/          # servicios (API, states, etc.)
+│   │   │   ├── types/              # tipos de datos TS
+│   │   │   └── utils/              # utilidades
+│   │   ├── modules/                # páginas/rutas de alto nivel
+│   │   ├── app.routes.ts           # rutas de la aplicación
+│   │   └── app.*
+│   ├── environments/               # environment.ts / environment.prod.ts / environment.development.ts
+│   ├── styles.scss                 # estilos globales (scss)
+│   └── main.ts
+├── angular.json
+├── tsconfig.json
+├── package.json
+├── pnpm-lock.yaml
+└── README.md
+```
+
+## 🔧 Consideraciones técnicas
+
+1. Componentes [PrimeNG](https://www.primefaces.org/primeng/) como framework de UI.
+2. Gestor de paquetes [pnpm](https://pnpm.io/).
+3. Herramientas de desarrollo [Angular CLI](https://cli.angular.io/).
+4. Estrategia de estidos: `scss` global y [TailwindCSS](https://tailwindcss.com/).
+5. HTTP: `HttpClient`, [TanStack Query](https://tanstack.com/query/v4/docs/overview).
+6. Calidad: `Prettier`, `ESLint`, `Husky`, `Lint-Staged`.
+
+## 🤔 Desiciones técnicas
+
+1. Se tomó la desición de utilizar terminos en inglés por defecto en todo el proyecto (Base de datos, Backend, Frontend, etc.), por razones de buenas prácticas.
+2. Se reemplazo la estrategia de usar una página para crear un `claim` por un modal de creación en la página del listado de `claims`.
+3. Debido a la limitante con el framework de UI de PrimeNG con los inputs, se hicieron validaciones mediante condiciones y estilos de CSS, para indicar interactividad y validación.
+
+## 📝 Licencia
+
+Este proyecto está bajo la licencia MIT.
+
+## 📝 Licencia
+
+Este proyecto está bajo la licencia MIT.
