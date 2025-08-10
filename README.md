@@ -7,6 +7,18 @@ Reto técnico Fullstack Developer. Sistema de gestion de reclamos de customer ca
 
 ---
 
+## Tabla de Contenidos
+
+1. [Requisitos](#requisitos)
+2. [Instalación](#instalación)
+3. [Variables de entorno](#🔒-environment-variables)
+4. [Estructura del proyecto](#🗂️-estructura-del-proyecto)
+5. [Consideraciones técnicas](#🔧-consideraciones-técnicas)
+6. [Desiciones técnicas](#🤔-desiciones-técnicas)
+7. [Licencia](#📝-licencia)
+
+---
+
 ## 🚀 Despliegue local
 
 ### Requisitos
