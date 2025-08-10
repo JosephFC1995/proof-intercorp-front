@@ -5,11 +5,10 @@ Reto técnico Fullstack Developer. Sistema de gestion de reclamos de customer ca
 **Estado:** `MVP`  
 **Demo:** https://claims-intercorp-front.josephfc.dev/
 
-
 ---
 
 > [!IMPORTANT]
-> Debido a la necesidad de desplegar el proyecto, se utilizo el servicio de [Render](https://render.com/), el cual brinda un paquete "Free" donde el tiempo de actividad es de 15 minutos, se recomienda entrar al dominio principal de la Api `https://proof-intercorp-backend.onrender.com/` y esperar a que se despliegue el proyecto.
+> Debido a la necesidad de desplegar el proyecto, se utilizo el servicio de [Render](https://render.com/), el cual brinda un paquete "Free" donde el tiempo de actividad es de 15 minutos, se recomienda entrar al dominio principal de la Api [https://proof-intercorp-backend.onrender.com/](https://proof-intercorp-backend.onrender.com/) y esperar a que se despliegue el proyecto.
 
 ---
 
