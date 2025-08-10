@@ -1,4 +1,5 @@
 export const environment = {
+    production: true,
     API_URL: 'https://proof-intercorp-backend.onrender.com/api/',
     PRODUCTION: true,
     VERSION: '1.0.0',
