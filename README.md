@@ -114,7 +114,3 @@ pnpm start
 ## 📝 Licencia
 
 Este proyecto está bajo la licencia MIT.
-
-## 📝 Licencia
-
-Este proyecto está bajo la licencia MIT.
