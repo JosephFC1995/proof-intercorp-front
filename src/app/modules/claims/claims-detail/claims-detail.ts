@@ -11,7 +11,7 @@ import { Claim, ClaimDetail, FileClaim } from '../../../core/types/claims';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { FileUtils } from '../../../core/utils/file';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormUpdateStatus } from '../../../core/components/claims/form-update-status/form-update-status';
 import { Toast } from 'primeng/toast';

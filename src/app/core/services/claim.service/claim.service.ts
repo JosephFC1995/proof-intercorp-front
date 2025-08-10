@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Claim, ClaimDetail, FileClaim } from '../../types/claims';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { lastValueFrom } from 'rxjs'
 import { ResponsePagination } from '../../types/global';
 
