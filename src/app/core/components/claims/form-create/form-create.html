@@ -75,7 +75,9 @@
         <!-- Files -->
         <p-fileupload name="files[]" url="https://www.primefaces.org/cdn/api/upload.php" (onSelect)="onUpload($event)"
             [showCancelButton]="false" [showUploadButton]="false" [multiple]="true" accept="image/*"
-            maxFileSize="2000000" mode="advanced" [disabled]="isLoadingForm()">
+            invalidFileSizeMessageSummary="{0}: Archivo demasiado grande"
+            invalidFileSizeMessageDetail="Por favor seleccione un archivo menos de {0}." maxFileSize="2000000"
+            mode="advanced" [disabled]="isLoadingForm()">
             <ng-template #empty>
                 <div>Arrastre y suelte archivos aquí para cargarlos.</div>
             </ng-template>
